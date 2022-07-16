@@ -22,6 +22,10 @@ class PostController extends Controller
             ->with(['tags', 'user']);
 
         if (request()->following == true) {
+
+            // to login page if not logged in
+            if (!auth()->user()) return redirect('/user/login?prev=/?following=true');
+
             $posts = $posts
                 ->select("posts.id", "posts.user_id", "title", "subtitle", "picture", "published", "created_at", "updated_at", 'follows.id as fid')
                 ->join('follows', function ($join) {
@@ -90,7 +94,7 @@ class PostController extends Controller
             ])
             ->withCount(['likes', 'views'])
             ->where('published', "<>", null)
-            ->find($id);
+            ->findOrFail($id);
 
         //dd($post->toArray());
 

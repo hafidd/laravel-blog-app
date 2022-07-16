@@ -195,7 +195,8 @@
             @foreach ($posts as $post)
                 <div
                     class="flex flex-col md:flex-row mb-4 md:h-40 2xl:h-44 w-full md:w-1/2 2xl:w-1/3 transition ease-in-out delay-50 hover:translate-x-1 duration-200 shadow-sm">
-                    <a href="/post/{{ $post->id }}" class="relative self-center shrink-0">
+                    <a href="/post/{{ $post->id }}{{ $post->published ? '' : '/settings' }}"
+                        class="relative self-center shrink-0">
                         <img src="{{ $post->picture ?? '/storage/gambar/defaultL.JPG' }}" alt="test"
                             class="object-cover min-h-[9rem] md:h-40 2xl:h-44 w-screen md:w-64 2xl:w-72 mb-2 md:mb-0">
                         <div class="flex flex-wrap-reverse absolute bottom-0 w-full px-1 pb-3 md:pb-0">
@@ -209,10 +210,10 @@
                         </div>
                     </a>
                     <div class="w-full px-1 md:px-4 py-1 flex flex-col-reverse md:flex-col h-full overflow-hidden">
-                        <a href="/post/{{ $post->id }}" class="">
+                        <a href="/post/{{ $post->id }}{{ $post->published ? '' : '/settings' }}" class="">
                             <h4
-                                class="group font-bold text-lg mb-1 w-full overflow-hidden overflow-ellipsis break-all md:whitespace-nowrap">
-                                {{ $post->title }}
+                                class="{{ $post->published ? '' : 'text-yellow-500' }} group font-bold text-lg mb-1 w-full overflow-hidden overflow-ellipsis break-all md:whitespace-nowrap">
+                                {{ (!$post->published ? '(Draft) ' : '') . $post->title }}
                                 <span
                                     class="
                                     hidden group-hover:block bg-white p-1 rounded shadow absolute text-center -mt-16 ml-4 z-50
@@ -226,8 +227,10 @@
                             </p>
                         </a>
                         <div class="self-center md:self-end text-xs md:text-sm font-semibold flex items-center mt-auto">
-                            <span>{{ date('d M Y - H:i', strtotime($post->published)) }} </span>
-                            <span class="ml-1 border rounded-lg px-1"> {{ $post->likes_count }} ❤️</span>
+                            @if ($post->published)
+                                <span>{{ date('d M Y - H:i', strtotime($post->published)) }} </span>
+                                <span class="ml-1 border rounded-lg px-1"> {{ $post->likes_count }} ❤️</span>
+                            @endif
                         </div>
                     </div>
                 </div>

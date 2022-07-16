@@ -1017,6 +1017,18 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
 }
+.bg-yellow-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+}
+.bg-yellow-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 249 195 / var(--tw-bg-opacity));
+}
+.bg-yellow-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 252 232 / var(--tw-bg-opacity));
+}
 .bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }

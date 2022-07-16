@@ -85,6 +85,8 @@ class UserController extends Controller
             ->excludeCols(['content'])
             ->withCount('likes')
             ->with(['tags'])
+            ->orderByRaw("CASE WHEN published IS NULL THEN 1 ELSE 0 END DESC")
+            ->orderBy('published', 'desc')
             ->paginate(10);
         //dd($posts->toArray());
 
