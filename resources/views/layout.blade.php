@@ -65,7 +65,7 @@
             <div class="py-2 md:py-4 px-2 md:px-5 flex justify-between">
                 <div class="justify-center items-center md:flex">
                     <a href="/" class="shrink-0">
-                        <img src="/storage/gambar/risu.jpg" alt="logo"
+                        <img src="/gambar/risu.jpg" alt="logo"
                             class="h-10 w-10 rounded-full mr-2 bg-green-200">
                     </a>
 
@@ -87,7 +87,7 @@
 
                         <div class="relative bg-white z-50" x-data={profile:false}>
                             <button x-on:click="profile=true">
-                                <img src="{{ auth()->user()->picture ?? '/storage/gambar/pp_default.png' }}"
+                                <img src="{{ auth()->user()->picture ?? '/gambar/pp_default.png' }}"
                                     alt="" class="h-10 w-10 object-cover rounded-full">
                             </button>
                             <div class="absolute w-40 -bottom-28 -left-28 md:-left-20" x-show="profile">

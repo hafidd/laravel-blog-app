@@ -21,7 +21,7 @@
                         <div
                             class="flex flex-col md:flex-row mb-4 md:h-40 2xl:h-44 w-full 2xl:w-1/2 transition ease-in-out delay-50 hover:translate-x-1 duration-200 shadow-sm">
                             <a href="/post/{{ $post->id }}" class="relative self-center shrink-0">
-                                <img src="{{ $post->picture ?? '/storage/gambar/defaultL.JPG' }}" alt="test"
+                                <img src="{{ $post->picture ?? '/gambar/defaultL.JPG' }}" alt="test"
                                     class="object-cover bg-gray-200 min-h-[9rem] md:h-40 2xl:h-44 w-screen md:w-64 2xl:w-72 mb-2 md:mb-0">
                                 <div class="flex flex-wrap-reverse absolute bottom-0 w-full px-1 pb-3 md:pb-0">
                                     <!-- tags -->
@@ -53,7 +53,7 @@
                                 <div
                                     class="self-center md:self-end text-xs md:text-sm font-semibold flex items-center mt-auto">
                                     <a href="/user/{{ $post->user->username }}" class="flex items-center">
-                                        <img src="{{ $post->user->picture ?? '/storage/gambar/pp_default.png' }}"
+                                        <img src="{{ $post->user->picture ?? '/gambar/pp_default.png' }}"
                                             alt="pp" class="h-7 w-7 object-cover border rounded-full mr-2">
                                         {{ $post->user->name }}
                                     </a>
@@ -85,7 +85,7 @@
                 @foreach ($users as $user)
                     <div class="flex h-20 mb-2">
                         <a href="/user/{{ $user->username }}" class="h-20 w-20 shrink-0">
-                            <img src="{{ $user->picture ?? '/storage/gambar/pp_default.png' }}"
+                            <img src="{{ $user->picture ?? '/gambar/pp_default.png' }}"
                                 class="object-cover rounded-full h-20 w-20">
                         </a>
                         <div class="p-1 flex flex-col justify-between w-full">

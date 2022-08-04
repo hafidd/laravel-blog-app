@@ -48,7 +48,7 @@
 
 
                 {{-- picture --}}
-                <img src="{{ $post->picture ?? '/storage/gambar/defaultL.JPG' }}" alt="image"
+                <img src="{{ $post->picture ?? '/gambar/defaultL.JPG' }}" alt="image"
                     class="mb-4 object-cover self-center w-11/12 lg:w-9/12 2xl:w-8/12 min-h-[10rem] bg-gray-200">
 
                 <!-- content -->

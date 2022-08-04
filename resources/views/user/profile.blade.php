@@ -21,7 +21,7 @@
         <div class="flex flex-wrap p-1 md:p-4 px-1 md:px-6 items-center justify-between mb-1">
             <div class="flex items-center">
                 <div class="relative shrink-0" x-data="{ upload: false }">
-                    <img src="{{ $user->picture ?? '/storage/gambar/pp_default.png' }}" alt="user"
+                    <img src="{{ $user->picture ?? '/gambar/pp_default.png' }}" alt="user"
                         class="h-16 w-16 md:h-24 md:w-24 rounded-full">
                     @if (auth()->user() && auth()->user()->id == $user->id)
                         <button class="absolute bottom-0 rounded-md px-1 bg-black bg-opacity-30" x-on:click="upload=true">
@@ -115,7 +115,7 @@
                                     <a :href="'/user/' + data.follower.username">
                                         <div class="flex items-center mt-1">
                                             <img :src="(data.follower.picture ? data.follower.picture :
-                                                '/storage/gambar/pp_default.png')"
+                                                '/gambar/pp_default.png')"
                                                 alt="" class="rounded-full w-8 h-8 object-cover mr-2">
                                             <span x-text="data.follower.name"></span>
                                         </div>
@@ -151,7 +151,7 @@
                                     <div class="flex items-center mt-1">
                                         <a :href="'/user/' + data.user.username" class="flex items-center">
                                             <img :src="(data.user.picture ? data.user.picture :
-                                                '/storage/gambar/pp_default.png')"
+                                                '/gambar/pp_default.png')"
                                                 alt="" class="rounded-full w-8 h-8 object-cover mr-2">
                                             <span x-text="data.user.name"></span>
                                         </a>
@@ -197,7 +197,7 @@
                     class="flex flex-col md:flex-row mb-4 md:h-40 2xl:h-44 w-full md:w-1/2 2xl:w-1/3 transition ease-in-out delay-50 hover:translate-x-1 duration-200 shadow-sm">
                     <a href="/post/{{ $post->id }}{{ $post->published ? '' : '/settings' }}"
                         class="relative self-center shrink-0">
-                        <img src="{{ $post->picture ?? '/storage/gambar/defaultL.JPG' }}" alt="test"
+                        <img src="{{ $post->picture ?? '/gambar/defaultL.JPG' }}" alt="test"
                             class="object-cover min-h-[9rem] md:h-40 2xl:h-44 w-screen md:w-64 2xl:w-72 mb-2 md:mb-0">
                         <div class="flex flex-wrap-reverse absolute bottom-0 w-full px-1 pb-3 md:pb-0">
                             <!-- tags -->

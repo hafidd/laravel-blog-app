@@ -34,7 +34,7 @@
                 </div>
                 <div class="flex p-1 border rounded-md">
                     <div class="w-24 h-24 shrink-0">
-                        <img src="/storage/gambar/pp_default.png" alt="">
+                        <img src="/gambar/pp_default.png" alt="">
                     </div>
                     <div class=" ">
                         <p class="max-h-24 p-2 break-all overflow-hidden">{{$artikel->konten}}</p>

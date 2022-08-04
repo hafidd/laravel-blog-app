@@ -9,14 +9,14 @@
                 {{-- meme --}}
                 <div id="meme" class="hidden w-full h-full fixed left-0 top-0 justify-center items-center animate-ping">
                     <div class="border-2">
-                        <img src="/storage/gambar/medal-meme.png" alt=""
+                        <img src="/gambar/medal-meme.png" alt=""
                             class="w-[60vw] md:w-[40vw] xl:w-[20vw] object-cover">
                     </div>
                 </div>
 
                 <div class="text-xs md:text-sm font-semibold flex justify-between items-center mb-3">
                     <a href="/user/{{ $post->user->username }}" class="flex items-center"><img
-                            src="{{ $post->user->picture ?? '/storage/gambar/pp_default.png' }}" alt="profile pic"
+                            src="{{ $post->user->picture ?? '/gambar/pp_default.png' }}" alt="profile pic"
                             class="h-7 w-7 border rounded-full mr-2">{{ $post->user->name }} </a>
                     <p>{{ date('d M Y - H:i', strtotime($post->published)) }}</p>
                 </div>
@@ -63,7 +63,7 @@
                 </div>
 
                 {{-- pic --}}
-                <img src="{{ $post->picture ?? '/storage/gambar/defaultL.JPG' }}" alt="image"
+                <img src="{{ $post->picture ?? '/gambar/defaultL.JPG' }}" alt="image"
                     class="mb-4 object-cover self-center w-11/12 lg:w-9/12 2xl:w-8/12 min-h-[10rem] bg-gray-200">
 
                 <!-- content -->
@@ -109,7 +109,7 @@
                     <div class="p-2 border rounded-lg mb-2">
                         <div class="text-xs md:text-sm font-semibold flex justify-between items-center mb-3">
                             <a href="/user/{{ $comment->user->username }}" class="flex items-center"><img
-                                    src="{{ $comment->user->picture ?? '/storage/gambar/pp_default.png' }}"
+                                    src="{{ $comment->user->picture ?? '/gambar/pp_default.png' }}"
                                     alt="profile pic" class="h-7 w-7 border rounded-full mr-2">
                                 {{ $comment->user->name }}
                             </a>
@@ -181,7 +181,7 @@
         <!-- Kanan -->
         <div class="mx-auto w-full xl:w-72 p-2 h-max shrink-0">
             <div class="flex flex-col justify-center items-center border-b-2 py-2 mb-4">
-                <img src="{{ $post->user->picture ?? '/storage/gambar/pp_default.png' }}" alt=""
+                <img src="{{ $post->user->picture ?? '/gambar/pp_default.png' }}" alt=""
                     class="w-10/12 max-h-[220px] object-scale-down">
                 <p class="text-lg font-bold mt-2 w-fit">{{ $post->user->name }}</p>
                 <a href="/user/{{ $post->user->username }}" class="">
@@ -209,7 +209,7 @@
                 @foreach ($morePosts as $morePost)
                     <a href="/post/{{ $morePost->id }}" class="">
                         <div class="mb-4">
-                            <img src="{{ $morePost->picture ?? '/storage/gambar/defaultL.JPG' }}"
+                            <img src="{{ $morePost->picture ?? '/gambar/defaultL.JPG' }}"
                                 alt="gambar" class="w-full min-h-[60px] bg-red-50">
                             <p class="font-bold">{{ $morePost->title }}</p>
                         </div>
