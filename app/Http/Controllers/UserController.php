@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Follow;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\UploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = new User();
+    }
+
     public function register()
     {
         return view('user.register');
@@ -66,29 +74,9 @@ class UserController extends Controller
 
     public function show($username)
     {
-        $user = User::where('username', $username)
-            ->withCount(['followers', 'follows'])
-            ->firstOrFail();
-
-        $following = false;
-        if (auth()->user()) {
-            $following = Follow::where(
-                [
-                    'user_id' => $user->id,
-                    'follower_id' => auth()->user()->id
-                ]
-            )->first() ? true : false;
-        }
-        //dd($following);
-
-        $posts = $user->posts()
-            ->excludeCols(['content'])
-            ->withCount('likes')
-            ->with(['tags'])
-            ->orderByRaw("CASE WHEN published IS NULL THEN 1 ELSE 0 END DESC")
-            ->orderBy('published', 'desc')
-            ->paginate(10);
-        //dd($posts->toArray());
+        $user = $this->user->getUserWithFollowCount($username);
+        $posts = $user->getPosts(10);
+        $following = !auth()->user() ? false : $this->user->isFollowing($user->id, auth()->user()->id);
 
         return view('user.profile', [
             "user" => $user,
@@ -108,23 +96,15 @@ class UserController extends Controller
         return back();
     }
 
-    public function updatePicture(User $user)
+    public function updatePicture(User $user, UploadService $uploadService)
     {
         if ($user->id != auth()->user()->id) {
             abort(403, "Unauthorized");
         }
-        request()->validate(["picture" => 'required|mimes:jpg,png|max:1024',]);
+        request()->validate(["picture" => 'required|mimes:jpg,png|max:1024']);
 
         if (request()->hasFile('picture')) {
-            // upload
-            if (config('app.use_cloudinary')) {
-                // cloudinary
-                $result = request()->picture->storeOnCloudinary('laravel-blog/users/' . $user->id);
-                $user->picture = $result->getSecurePath();
-            } else {
-                // local
-                $user->picture = '/storage/' . request()->file('picture')->store('users', 'public');
-            }
+            $user->picture = $uploadService->uploadProfile($user->id, request()->picture);
             $user->save();
         }
 
