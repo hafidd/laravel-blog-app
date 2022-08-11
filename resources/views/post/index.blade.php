@@ -176,6 +176,7 @@
                     {{ $comments->links() }}
                 </div>
             </div>
+       
         </div>
 
         <!-- Kanan -->

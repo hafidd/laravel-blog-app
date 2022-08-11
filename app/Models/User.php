@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Post;
 use App\Models\PostLike;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -82,14 +83,52 @@ class User extends Authenticatable
     }
 
     // get user posts
-    public function getPosts($pagination = 10)
+    public function getPosts($pagination = 10, $includeUnpublished = false)
     {
-        return $this->posts()
+        $posts = $this->posts();
+
+        if (!$includeUnpublished) $posts = $posts->published();
+
+        $posts = $posts
             ->excludeCols(['content'])
             ->withCount('likes')
             ->with(['tags'])
             ->orderByRaw("CASE WHEN published IS NULL THEN 1 ELSE 0 END DESC")
             ->orderBy('published', 'desc')
             ->paginate($pagination);
+
+        return $posts;
+    }
+
+    // get n latest published user posts
+    public function getPublishedPost($limit = 3, $excludeIds = [])
+    {
+        return $this->posts()
+            ->published()
+            ->whereNotIn('id', $excludeIds)
+            ->latest()->take($limit)->get();
+    }
+
+    // get n popular users (by post views)
+    public function getPopularUsers($limit = 5)
+    {
+        $users = $this->select('users.*', DB::raw('count(users.id) as view_count'))
+            ->join('posts', 'users.id', 'posts.user_id')
+            ->join('post_views', 'post_views.post_id', 'posts.id')
+            ->groupBy('users.id')
+            ->orderBy('view_count', 'desc')
+            ->take($limit);
+
+        if (auth()->user()) {
+            // exclude followed users
+            $users = $users
+                ->leftJoin('follows', function ($join) {
+                    $join->on('users.id', '=', 'follows.user_id')
+                        ->where('follower_id', auth()->user()->id);
+                })
+                ->whereNull('follows.id')
+                ->where('users.id', '<>', auth()->user()->id);
+        }
+        return $users = $users->get();
     }
 }

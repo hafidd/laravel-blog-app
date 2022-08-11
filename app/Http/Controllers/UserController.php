@@ -72,10 +72,13 @@ class UserController extends Controller
         return back()->withErrors(['email' => 'Email/Password salah'])->onlyInput('email');
     }
 
+    // profile page
     public function show($username)
     {
+        $isMyProfile = auth()->user() && auth()->user()->username === $username;
+
         $user = $this->user->getUserWithFollowCount($username);
-        $posts = $user->getPosts(10);
+        $posts = $user->getPosts(10, $isMyProfile);
         $following = !auth()->user() ? false : $this->user->isFollowing($user->id, auth()->user()->id);
 
         return view('user.profile', [

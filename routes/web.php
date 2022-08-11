@@ -22,7 +22,7 @@ Route::post('/ckupload', [PostController::class, 'upload'])->name('ckupload')->m
 
 Route::get('/post/create', [PostController::class, 'create'])->middleware(['auth']);
 Route::get('/post/tags', [PostController::class, 'getTags']);
-Route::get('/post/tags/{tag}', [PostController::class, 'getTags']);
+Route::get('/post/tags/{keyword}', [PostController::class, 'getTags']);
 Route::get('/post/{post}/edit', [PostController::class, 'edit'])->middleware(['auth']);
 Route::get('/post/{post}/settings', [PostController::class, 'settings'])->middleware(['auth']);
 Route::post('/post/{post}/update', [PostController::class, 'update'])->middleware(['auth']);
