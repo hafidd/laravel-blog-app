@@ -9,8 +9,7 @@
                 {{-- meme --}}
                 <div id="meme" class="hidden w-full h-full fixed left-0 top-0 justify-center items-center animate-ping">
                     <div class="border-2">
-                        <img src="/gambar/medal-meme.png" alt=""
-                            class="w-[60vw] md:w-[40vw] xl:w-[20vw] object-cover">
+                        <img src="/gambar/medal-meme.png" alt="" class="w-[60vw] md:w-[40vw] xl:w-[20vw] object-cover">
                     </div>
                 </div>
 
@@ -109,8 +108,8 @@
                     <div class="p-2 border rounded-lg mb-2">
                         <div class="text-xs md:text-sm font-semibold flex justify-between items-center mb-3">
                             <a href="/user/{{ $comment->user->username }}" class="flex items-center"><img
-                                    src="{{ $comment->user->picture ?? '/gambar/pp_default.png' }}"
-                                    alt="profile pic" class="h-7 w-7 border rounded-full mr-2">
+                                    src="{{ $comment->user->picture ?? '/gambar/pp_default.png' }}" alt="profile pic"
+                                    class="h-7 w-7 border rounded-full mr-2">
                                 {{ $comment->user->name }}
                             </a>
                             <p>{{ date('d M Y - H:i', strtotime($comment->created_at)) }}</p>
@@ -122,7 +121,7 @@
 
                             <div x-data="{
                                 disabled: {{ auth()->user() ? 'false' : 'true' }},
-                                liked: {{ !auth()->user()? 'false': ($comment->likes()->where('user_id', auth()->user()->id)->count() > 0? 'true': 'false') }},
+                                liked: {{ $comment->liked ? 'true' : 'false' }},
                                 likeCount: {{ $comment->likes_count }},
                                 like: async function() {
                                     try {
@@ -176,7 +175,7 @@
                     {{ $comments->links() }}
                 </div>
             </div>
-       
+
         </div>
 
         <!-- Kanan -->
@@ -210,8 +209,8 @@
                 @foreach ($morePosts as $morePost)
                     <a href="/post/{{ $morePost->id }}" class="">
                         <div class="mb-4">
-                            <img src="{{ $morePost->picture ?? '/gambar/defaultL.JPG' }}"
-                                alt="gambar" class="w-full min-h-[60px] bg-red-50">
+                            <img src="{{ $morePost->picture ?? '/gambar/defaultL.JPG' }}" alt="gambar"
+                                class="w-full min-h-[60px] bg-red-50">
                             <p class="font-bold">{{ $morePost->title }}</p>
                         </div>
                     </a>
@@ -231,7 +230,7 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('likeData', () => ({
                 disabled: {{ auth()->user() ? 'false' : 'true' }},
-                liked: {{ $liked ? 'true' : 'false' }},
+                liked: {{ $post->liked ? 'true' : 'false' }},
                 likeCount: {{ $post->likes_count }},
                 meme: false,
 

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\PostLike;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -17,6 +16,14 @@ class Post extends Model
 
     protected $fillable = ['user_id', 'title', 'subtitle', 'picture', 'published', 'content'];
     protected $columns = ["id", "user_id", "title", "subtitle", "picture", "content", "published", "created_at", "updated_at"];
+
+    // protected $appends = ['isLiked'];
+    // public function getIsLikedAttribute()
+    // {
+    //     //return false;
+    //     if (!auth()->user()) return false;
+    //     return $this->likes->where('user_id', auth()->user()?->id ?? 0)->first() ? true : false;
+    // }// n+1
 
     // relations
     public function user()
@@ -39,9 +46,13 @@ class Post extends Model
     {
         return $this->hasMany(PostView::class);
     }
+    public function liked()
+    {
+        return $this->hasOne(PostLike::class)->where('user_id', auth()->user()?->id ?? 0);
+    }
 
     // scopes
-    public function scopeExcludeCols($query, $value = [])
+    public function scopeExcludeCols($query, $value = []) // if needed call this first
     {
         return $query->select(array_diff($this->columns, (array) $value));
     }
@@ -73,21 +84,15 @@ class Post extends Model
     public function getHomepagePosts($paginate = 6)
     {
         // 6 posts
-        $posts = $this->with(['tags', 'user'])
-            ->published()
-            ->excludeCols(['content']);
+        $posts = $this
+            ->excludeCols(['content'])
+            ->with(['tags', 'user', 'liked'])
+            ->withCount(['likes'])
+            ->published();
 
-        if (request()->following == true) {
-            $posts = $posts->following();
-        }
-
-        if (!empty(request()->search)) {
-            $posts = $posts->search(request()->search);
-        }
-
-        if (!empty(request()->tags)) {
-            $posts = $posts->tags(request()->tags);
-        }
+        $posts = request()->following == true ?  $posts->following() : $posts;
+        $posts = !empty(request()->search) ? $posts->search(request()->search) : $posts;
+        $posts = !empty(request()->tags) ?  $posts->tags(request()->tags) : $posts;
 
         $posts = $posts->orderBy('published', 'desc')
             ->orderBy('id', 'desc')
@@ -99,5 +104,13 @@ class Post extends Model
     public function getLikeByUser($userId)
     {
         return $this->likes()->where('user_id', $userId)->first();
+    }
+
+    public function getDetailPost($id)
+    {
+        return $this->with(['tags', 'liked'])
+            ->withCount(['likes', 'views'])
+            ->published()
+            ->findOrFail($id);
     }
 }

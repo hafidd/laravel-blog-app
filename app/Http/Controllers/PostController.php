@@ -21,7 +21,7 @@ class PostController extends Controller
         }
 
         // 6 home posts
-        $posts = $post->getHomepagePosts(6);
+        $posts = $post->getHomepagePosts(10);
         // 10 top tags
         $tags = $postTag->getPopularTags(10);
         // 5 top users
@@ -42,15 +42,9 @@ class PostController extends Controller
 
     public function show($id, Post $post, PostView $postView)
     {
-        $post = $post->with(['tags'])
-            ->withCount(['likes', 'views'])
-            ->published()
-            ->findOrFail($id);
-
-        $comments = $post->comments()->with(['user'])->withCount(['likes'])->latest()->paginate(20);
+        $post = $post->getDetailPost($id);
+        $comments = $post->comments()->with('user')->with('liked')->withCount('likes')->latest()->paginate(20);
         $morePosts = $post->user->getPublishedPost(3, [$post->id]);
-        $liked = auth()->user() ? $post->likes->where('user_id', auth()->user()->id)
-            ->where('post_id', $post->id)->count() > 0 : false;
 
         // +postview
         $postView->create(['user_id' => auth()->user()->id ?? null, 'post_id' => $post->id]);
@@ -59,7 +53,6 @@ class PostController extends Controller
             "post" => $post,
             "comments" => $comments,
             "morePosts" => $morePosts,
-            "liked" => $liked
         ]);
     }
 

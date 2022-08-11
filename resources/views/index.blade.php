@@ -23,8 +23,17 @@
                             <a href="/post/{{ $post->id }}" class="relative self-center shrink-0">
                                 <img src="{{ $post->picture ?? '/gambar/defaultL.JPG' }}" alt="test"
                                     class="object-cover bg-gray-200 min-h-[9rem] md:h-40 2xl:h-44 w-screen md:w-64 2xl:w-72 mb-2 md:mb-0">
+                                {{-- likes --}}
+                                <div
+                                    class="absolute w-fit top-0 right-0 px-1 pb-3 md:pb-0">
+                                    <div class="p-1 mt-1 bg-black bg-opacity-50 rounded-lg text-sm text-white font-semibold"
+                                        x-on:click="like" :disabled="disabled">
+                                        <span>{{ $post->likes_count }}</span>
+                                        <span>{{ $post->liked ? '❤️' : '🤍' }}</span>
+                                    </div>
+                                </div>
+                                <!-- tags -->
                                 <div class="flex flex-wrap-reverse absolute bottom-0 w-full px-1 pb-3 md:pb-0">
-                                    <!-- tags -->
                                     @foreach ($post->tags as $tag)
                                         <button
                                             class="bg-black bg-opacity-60 text-sm text-white shadow-md hover:bg-white hover:text-black font-semibold rounded-md px-1 mr-1 mb-1">
@@ -53,8 +62,8 @@
                                 <div
                                     class="self-center md:self-end text-xs md:text-sm font-semibold flex items-center mt-auto">
                                     <a href="/user/{{ $post->user->username }}" class="flex items-center">
-                                        <img src="{{ $post->user->picture ?? '/gambar/pp_default.png' }}"
-                                            alt="pp" class="h-7 w-7 object-cover border rounded-full mr-2">
+                                        <img src="{{ $post->user->picture ?? '/gambar/pp_default.png' }}" alt="pp"
+                                            class="h-7 w-7 object-cover border rounded-full mr-2">
                                         {{ $post->user->name }}
                                     </a>
                                     &nbsp;- {{ date('d M Y - H:i', strtotime($post->published)) }}

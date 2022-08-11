@@ -26,6 +26,10 @@ class Comment extends Model
     {
         return $this->hasMany(CommentLike::class);
     }
+    public function liked()
+    {
+        return $this->hasOne(CommentLike::class)->where('user_id', auth()->user()?->id ?? 0);
+    } 
 
     public function getLikeByUser($userId)
     {
